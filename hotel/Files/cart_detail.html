@@ -1,0 +1,147 @@
+{% load cart_tag %}
+{% load static %}
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}" />
+
+  <!--owl slider stylesheet -->
+  <link rel="stylesheet" type="text/css" href="{% static 'https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css' %}" />
+  <!-- nice select  -->
+  <link rel="stylesheet" href="{% static 'https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css' %}" integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ==" crossorigin="anonymous" />
+  <!-- font awesome style -->
+  <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet" />
+
+  <!-- Custom styles for this template -->
+  <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="{% static 'css/responsive.css' %}" rel="stylesheet" />
+  <link rel="shor'tcut icon" href="{% static 'images/logo.png' %}" type="">
+
+  <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+
+</head>
+<body>
+    <header style="background-color:black;width:100%;height:100%" class="header_section">
+        <div class="container">
+          <nav class="navbar navbar-expand-lg custom_nav-container ">
+            <a class="navbar-brand" href="/">
+              <span>
+                Club 10 Chicken
+              </span>
+            </a>
+  
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class=""> </span>
+            </button>
+  
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav  mx-auto ">
+                <li class="nav-item active">
+                  <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                </li>
+                {% if user.is_authenticated %}
+                <p style="color: white;">{{user.username}}</p>
+                <li class="nav-item">
+                  <a class="nav-link" href="credentials\logout">logout</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                  <a class="nav-link" href="credentials/register">register</a>
+                </li>
+  
+                <li class="nav-item">
+                  <a class="nav-link" href="credentials/login">LogIn</a>
+                </li>
+                {% endif %}
+                
+              </div>
+            </div>
+          </nav>
+        </div>
+      </header><br>
+    
+
+    <section class="food_section layout_padding-bottom">
+        <div class="container">
+          <div class="heading_container heading_center">
+            <h2>
+              Our Menu
+            </h2>
+          </div>
+    
+          <ul class="filters_menu">
+            <li class="active" data-filter="*">All</li>
+            <li data-filter=".burger">Burger</li>
+            <li data-filter=".pizza">Pizza</li>
+            <li data-filter=".pasta">Pasta</li>
+            <li data-filter=".fries">Fries</li>
+          </ul>
+    
+          <div class="filters-content">
+            <div class="row grid">
+              <!-- {{request.session.cart.keys|length}} -->
+            {% for key,value in request.session.cart.items %}
+              
+            <div class="col-sm-6 col-lg-4 all pizza">
+                <div class="box">
+                  <div>
+                      <div class="img-box">
+                        <img src="{{value.image}}" alt="">
+                      </div>
+                    <div class="detail-box">
+                      <h5>
+                       
+                        {{value.name}}
+                      </h5>
+                      <p>Price(per each): Rs{{value.price}} /-
+                      </p>
+                      <div class="options">
+                        <h6>
+                            {{value.quantity}}
+                        </h6>
+                        <h5>Total 
+                          
+                            {{ value.price|multiply:value.quantity }}
+                          </h5>
+                        <div class="options">
+                          
+
+                       
+                        <a href="{% url 'item_increment' value.product_id %}"><i class="fa fa-plus" aria-hidden="true"></i></a>
+                          
+                        <a href="{% url 'item_decrement' value.product_id %}"><i class="fa fa-minus" aria-hidden="true"></i></a>
+                        <a href="{% url 'item_clear' value.product_id %}"><i class="fa fa-trash" aria-hidden="true"></i></a><br>
+                        <!-- <a href="{% url 'item_decrement' value.product_id %}">-</a> -->
+                        
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+         
+            {% endfor %}
+              
+            </div>
+          </div>
+          <div class="btn-box">
+            <a href="{% url 'cart_clear' %}">Clear Cart</a> 
+            
+          </div>
+        </div>
+        <div class="total"></div>
+      </section>
+    
+</body>
